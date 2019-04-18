@@ -5,28 +5,41 @@ using UnityEngine.UI;
 using TMPro;
 using System.Threading;
 using System.Collections;
+using UnityEngine.UI.Extensions;
+using UnityEngine.SceneManagement;
 
 
 public class ObserverCommScript : MonoBehaviour
 {
 
     public Button startButton;
-    public GameObject subject;
-    public GameObject client;
-    public GameObject observerA;
-    public GameObject observerB;
-    public GameObject observerC;
+    public Button switchButton;
+
+    public GameObject subjectToObserverA;
+    public GameObject subjectToObserverB;
+    public GameObject subjectToObserverC;
+    public GameObject observerAToSubject;
+    public GameObject observerBToSubject;
+    public GameObject observerCToSubject;
+    public GameObject clientToSubject;
+    public GameObject subjectToSubject;
 
     // Start is called before the first frame update
     void Start()
     {
         startButton.onClick.AddListener(DoSomething);
+        switchButton.onClick.AddListener(SwitchScene);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void SwitchScene()
+    {
+        SceneManager.LoadScene(0);
     }
 
     private void DoSomething()
@@ -37,132 +50,132 @@ public class ObserverCommScript : MonoBehaviour
     private IEnumerator SetMyColor()
     {
 
+        Transform textSubjectToObserverA = subjectToObserverA.transform.GetChild(0);
+        Transform lineSubjectToObserverA = subjectToObserverA.transform.GetChild(1);
+        Transform textSubjectToObserverB = subjectToObserverB.transform.GetChild(0);
+        Transform lineSubjectToObserverB = subjectToObserverB.transform.GetChild(1);
+        Transform textSubjectToObserverC = subjectToObserverC.transform.GetChild(0);
+        Transform lineSubjectToObserverC = subjectToObserverC.transform.GetChild(1);
+        Transform textObserverAToSubject = observerAToSubject.transform.GetChild(0);
+        Transform lineObserverAToSubject = observerAToSubject.transform.GetChild(1);
+        Transform textObserverBToSubject = observerBToSubject.transform.GetChild(0);
+        Transform lineObserverBToSubject = observerBToSubject.transform.GetChild(1);
+        Transform textObserverCToSubject = observerCToSubject.transform.GetChild(0);
+        Transform lineObserverCToSubject = observerCToSubject.transform.GetChild(1);
+        Transform textClientToSubject = clientToSubject.transform.GetChild(0);
+        Transform lineClientToSubject = clientToSubject.transform.GetChild(1);
+        Transform textSubjectToSubject = subjectToSubject.transform.GetChild(0);
+        Transform lineSubjectToSubject = subjectToSubject.transform.GetChild(1);
+        
+        
         // ATTACH
-        GameObject methodsS = client.transform.Find("Methods").gameObject;
-        GameObject attributesS = client.transform.Find("Attributes").gameObject;
-        GameObject attributesOA = observerA.transform.Find("Attributes").gameObject;
-        GameObject attributesOB = observerB.transform.Find("Attributes").gameObject;
-        GameObject attributesOC = observerC.transform.Find("Attributes").gameObject;
-        GameObject methodsOA = observerA.transform.Find("Methods").gameObject;
-        GameObject methodsOB = observerB.transform.Find("Methods").gameObject;
-        GameObject methodsOC = observerC.transform.Find("Methods").gameObject;
-
-        TextMeshProUGUI textAttach = methodsS.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textStateS = attributesS.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textObserversS = attributesS.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textStateOA = attributesOA.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textStateOB = attributesOB.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textStateOC = attributesOC.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-
-        TextMeshProUGUI textSetState = methodsS.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textGetState = methodsS.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textNotify = methodsS.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textDetach = methodsS.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textUpdateA = methodsOA.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textUpdateB = methodsOB.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI textUpdateC = methodsOC.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-
-    
-
-        yield return new WaitForSeconds(1);
-        textAttach.color = Color.red;
-        yield return new WaitForSeconds(1);
-        textObserversS.color = Color.red;
-        observerA.GetComponent<Image>().color = Color.red;
-        textObserversS.text += " = oA";
-        yield return new WaitForSeconds(1);
-        observerB.GetComponent<Image>().color = Color.red;
-        textObserversS.text += ", oB";
-        yield return new WaitForSeconds(1);
-        observerC.GetComponent<Image>().color = Color.red;
-        textObserversS.text += ", oC";
-
-
         yield return new WaitForSeconds(2);
-        textAttach.color = Color.black;
-        observerA.GetComponent<Image>().color = Color.white;
-        observerB.GetComponent<Image>().color = Color.white;
-        observerC.GetComponent<Image>().color = Color.white;
-        textObserversS.color = Color.black;
+        lineSubjectToObserverA.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineSubjectToObserverA.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        lineSubjectToObserverB.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineSubjectToObserverB.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        lineSubjectToObserverC.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineSubjectToObserverC.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        textSubjectToObserverA.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        textSubjectToObserverB.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        textSubjectToObserverC.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        yield return new WaitForSeconds(2);
+        lineSubjectToObserverA.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineSubjectToObserverA.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        lineSubjectToObserverB.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineSubjectToObserverB.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        lineSubjectToObserverC.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineSubjectToObserverC.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        textSubjectToObserverA.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
+        textSubjectToObserverB.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
+        textSubjectToObserverC.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
 
         // SET STATE
+        yield return new WaitForSeconds(1);
+        lineClientToSubject.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineClientToSubject.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        textClientToSubject.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
         yield return new WaitForSeconds(2);
-        textSetState.color = Color.red;
-        yield return new WaitForSeconds(1);
-        textSetState.text = " + SetState(234)";
-        yield return new WaitForSeconds(1);
-        textStateS.color = Color.red;
-        textStateS.text += " = 234";
-        yield return new WaitForSeconds(1);
-        textSetState.text = " + SetState(state)";
-        textStateS.color = Color.black;
-        textSetState.color = Color.black;
+        lineClientToSubject.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineClientToSubject.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        textClientToSubject.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
 
         // NOTIFY
         yield return new WaitForSeconds(1);
-        textNotify.color = Color.red;
+        lineSubjectToSubject.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineSubjectToSubject.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        textSubjectToSubject.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        yield return new WaitForSeconds(2);
+        lineSubjectToSubject.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineSubjectToSubject.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        textSubjectToSubject.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
 
         // UPDATE
         yield return new WaitForSeconds(1);
-        textUpdateA.color = Color.red;
-        yield return new WaitForSeconds(1);
-        textGetState.color = Color.red;
-        textStateOA.color = Color.red;
-        textStateOA.text += " = 234";
-        yield return new WaitForSeconds(1);
-        textUpdateA.color = Color.black;
-        textGetState.color = Color.black;
-        textStateOA.color = Color.black;
-        yield return new WaitForSeconds(1);
-        textUpdateB.color = Color.red;
-        yield return new WaitForSeconds(1);
-        textGetState.color = Color.red;
-        textStateOB.color = Color.red;
-        textStateOB.text += " = 234";
-        yield return new WaitForSeconds(1);
-        textUpdateB.color = Color.black;
-        textGetState.color = Color.black;
-        textStateOB.color = Color.black;
-        yield return new WaitForSeconds(1);
-        textUpdateC.color = Color.red;
-        yield return new WaitForSeconds(1);
-        textGetState.color = Color.red;
-        textStateOC.color = Color.red;
-        textStateOC.text += " = 234";
-        yield return new WaitForSeconds(1);
-        textUpdateC.color = Color.black;
-        textGetState.color = Color.black;
-        textStateOC.color = Color.black;
-        //yield return new WaitForSeconds(1);
-        textNotify.color = Color.black;
-
-        // DETACH 
+        lineSubjectToObserverA.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineSubjectToObserverA.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        lineSubjectToObserverB.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineSubjectToObserverB.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        lineSubjectToObserverC.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineSubjectToObserverC.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        textSubjectToObserverA.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        textSubjectToObserverB.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        textSubjectToObserverC.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
         yield return new WaitForSeconds(2);
-        textDetach.color = Color.red;
-        yield return new WaitForSeconds(1);
-        textObserversS.color = Color.red;
-        observerA.GetComponent<Image>().color = Color.red;
-        yield return new WaitForSeconds(1);
-        textObserversS.text = " - observers = oB, oC";
-        yield return new WaitForSeconds(1);
-        observerB.GetComponent<Image>().color = Color.red;
-        yield return new WaitForSeconds(1);
-        textObserversS.text = " - observers = oC";
-        yield return new WaitForSeconds(1);
-        observerC.GetComponent<Image>().color = Color.red;
-        yield return new WaitForSeconds(1);
-        textObserversS.text = " - observers";
+        lineSubjectToObserverA.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineSubjectToObserverA.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        lineSubjectToObserverB.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineSubjectToObserverB.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        lineSubjectToObserverC.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineSubjectToObserverC.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        textSubjectToObserverA.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
+        textSubjectToObserverB.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
+        textSubjectToObserverC.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
 
+        // GET STATE
+        yield return new WaitForSeconds(1);
+        lineObserverAToSubject.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineObserverAToSubject.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        lineObserverBToSubject.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineObserverBToSubject.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        lineObserverCToSubject.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineObserverCToSubject.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        textObserverAToSubject.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        textObserverBToSubject.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        textObserverCToSubject.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
         yield return new WaitForSeconds(2);
-        textDetach.color = Color.black;
-        observerA.GetComponent<Image>().color = Color.white;
-        observerB.GetComponent<Image>().color = Color.white;
-        observerC.GetComponent<Image>().color = Color.white;
-        textObserversS.color = Color.black;
-        textStateOA.text = " - observerState";
-        textStateOB.text = " - observerState";
-        textStateOC.text = " - observerState";
-        textStateS.text = " - subjectState";
+        lineObserverAToSubject.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineObserverAToSubject.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        lineObserverBToSubject.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineObserverBToSubject.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        lineObserverCToSubject.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineObserverCToSubject.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        textObserverAToSubject.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
+        textObserverBToSubject.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
+        textObserverCToSubject.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
+
+        // DETACH
+        yield return new WaitForSeconds(1);
+        lineSubjectToObserverA.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineSubjectToObserverA.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        lineSubjectToObserverB.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineSubjectToObserverB.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        lineSubjectToObserverC.gameObject.GetComponent<UILineRenderer>().color = Color.red;
+        lineSubjectToObserverC.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.red;
+        textSubjectToObserverA.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        textSubjectToObserverB.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        textSubjectToObserverC.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+        yield return new WaitForSeconds(2);
+        lineSubjectToObserverA.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineSubjectToObserverA.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        lineSubjectToObserverB.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineSubjectToObserverB.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        lineSubjectToObserverC.gameObject.GetComponent<UILineRenderer>().color = Color.black;
+        lineSubjectToObserverC.GetChild(0).gameObject.GetComponent<UIPolygon>().color = Color.black;
+        textSubjectToObserverA.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
+        textSubjectToObserverB.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
+        textSubjectToObserverC.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().color = Color.black;
+
 
     }
 }

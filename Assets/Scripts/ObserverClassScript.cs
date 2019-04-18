@@ -5,13 +5,15 @@ using UnityEngine.UI;
 using TMPro;
 using System.Threading;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 
 public class ObserverClassScript : MonoBehaviour
 {
 
     public Button startButton;
-    public Button testButton;
+    public Button switchButton;
+
     public GameObject subject;
     public GameObject CSubject;
     public GameObject observer;
@@ -23,12 +25,18 @@ public class ObserverClassScript : MonoBehaviour
     void Start()
     {
         startButton.onClick.AddListener(DoSomething);
+        switchButton.onClick.AddListener(SwitchScene);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void SwitchScene()
+    {
+        SceneManager.LoadScene(1);
     }
 
     private void DoSomething()
@@ -70,18 +78,22 @@ public class ObserverClassScript : MonoBehaviour
         textAttach.color = Color.red;
         yield return new WaitForSeconds(1);
         textObserversS.color = Color.red;
+        textAttach.text = " + Attach(oA)";
         observerA.GetComponent<Image>().color = Color.red;
         textObserversS.text += " = oA";
         yield return new WaitForSeconds(1);
+        textAttach.text = " + Attach(oB)";
         observerB.GetComponent<Image>().color = Color.red;
         textObserversS.text += ", oB";
         yield return new WaitForSeconds(1);
+        textAttach.text = " + Attach(oC)";
         observerC.GetComponent<Image>().color = Color.red;
         textObserversS.text += ", oC";
 
 
         yield return new WaitForSeconds(2);
         textAttach.color = Color.black;
+        textAttach.text = " + Attach(Observer)";
         observerA.GetComponent<Image>().color = Color.white;
         observerB.GetComponent<Image>().color = Color.white;
         observerC.GetComponent<Image>().color = Color.white;
@@ -142,21 +154,25 @@ public class ObserverClassScript : MonoBehaviour
         yield return new WaitForSeconds(2);
         textDetach.color = Color.red;
         yield return new WaitForSeconds(1);
+        textDetach.text = " + Detach(oA)";
         textObserversS.color = Color.red;
         observerA.GetComponent<Image>().color = Color.red;
         yield return new WaitForSeconds(1);
         textObserversS.text = " - observers = oB, oC";
         yield return new WaitForSeconds(1);
+        textDetach.text = " + Detach(oB)";
         observerB.GetComponent<Image>().color = Color.red;
         yield return new WaitForSeconds(1);
         textObserversS.text = " - observers = oC";
         yield return new WaitForSeconds(1);
+        textDetach.text = " + Detach(oC)";
         observerC.GetComponent<Image>().color = Color.red;
         yield return new WaitForSeconds(1);
         textObserversS.text = " - observers";
 
         yield return new WaitForSeconds(2);
         textDetach.color = Color.black;
+        textDetach.text = " + Detach(Observer)";
         observerA.GetComponent<Image>().color = Color.white;
         observerB.GetComponent<Image>().color = Color.white;
         observerC.GetComponent<Image>().color = Color.white;
