@@ -409,12 +409,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadButton: {fileID: 1282641275}
+  startButton: {fileID: 377092549}
   panel: {fileID: 1261076952}
   objectPrefab: {fileID: 7320676437126485876, guid: d11ba2134c2e59049855d96a7aa3f777,
     type: 3}
   linePrefab: {fileID: 6279212123129945556, guid: 4097e6ea9767e5b479e940770e42041a,
     type: 3}
-  messagePrefab: {fileID: 55970864, guid: 0f2677bdc6b273a4f827a400cf72b635, type: 3}
+  messagePrefab: {fileID: 6238379139145156979, guid: e84ef89c3cfe6564da08e1e343838ec4,
+    type: 3}
+  messageLeftPrefab: {fileID: 389647841150356417, guid: 3262ce88f22c638448c9b5fb2378ebb7,
+    type: 3}
+  topPrefab: {fileID: 5137506860627281109, guid: f9eba14469ec5bc4fb4cfb78aa09c612,
+    type: 3}
 --- !u!1 &80410022
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,14 +793,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+  m_Color: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6521,7 +6527,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
