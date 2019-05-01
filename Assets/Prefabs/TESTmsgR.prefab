@@ -27,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 14020101218665649}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children: []
   m_Father: {fileID: 9190119042108716430}
   m_RootOrder: 0
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 4035750944001711833}
   - component: {fileID: 2666660154597015926}
   m_Layer: 0
-  m_Name: TESTmessage
+  m_Name: TESTmsgR
   m_TagString: Message
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209,7 +209,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6238379139145156979}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
