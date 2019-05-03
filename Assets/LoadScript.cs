@@ -289,6 +289,7 @@ public class LoadScript : MonoBehaviour
             myMessage.transform.eulerAngles = new Vector3(0, 0, angle);
             // set name of message
 
+            //myMessage.transform.GetChild(1).GetChild(0).GetComponent<UIPolygon>().rotation = 50;
             myMessage.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = name;
         }
 
