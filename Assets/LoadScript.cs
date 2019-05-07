@@ -13,6 +13,7 @@ public class LoadScript : MonoBehaviour
 {
     public Button loadButton;
     public Button startButton;
+    public Button exitButton;
     public GameObject panel;
     public GameObject objectPrefab;
     public GameObject linePrefab;
@@ -22,15 +23,11 @@ public class LoadScript : MonoBehaviour
     public GameObject bottomPrefab;
     
 
-    //public GameObject bottomPrefab;
-
     private List<object> objectList = new List<object>();
     private List<GameObject> gameObjectList = new List<GameObject>();
     private List<(GameObject object1, GameObject object2, GameObject msg)> communicationList = new List<(GameObject object1, GameObject object2, GameObject msg)>();
     private List<(int object1, int object2, GameObject line)> associationList = new List<(int object1, int object2, GameObject line)>();
     private List<int> animationIndices = new List<int>();
-
-    //private List<Tuple<int, int, GameObject>> associationList = new List<Tuple<int, int, GameObject>>();
 
 
     // Start is called before the first frame update
@@ -38,6 +35,7 @@ public class LoadScript : MonoBehaviour
     {
         loadButton.onClick.AddListener(LoadFromFile);
         startButton.onClick.AddListener(StartAnimation);
+        exitButton.onClick.AddListener(Exit);
         
     }
 
@@ -82,9 +80,6 @@ public class LoadScript : MonoBehaviour
         string path = "setupPatternAnimator.txt";
         string line;
 
-        //Image
-
-        
 
         //Read the text from directly from the test.txt file
         StreamReader reader = new StreamReader(path);
@@ -96,15 +91,7 @@ public class LoadScript : MonoBehaviour
         byte[] fileData = File.ReadAllBytes(imagePath);
         Texture2D tex = new Texture2D(2, 2);
         tex.LoadImage(fileData); 
-
-        //Texture2D tex;
-        //tex = new Texture2D(490, 300, TextureFormat.DXT1, false);
-        //WWW www = new WWW("classDiagram.PNG");
-        //www.LoadImageIntoTexture(tex);
         Sprite image = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
-
-        //Sprite image = Resources.Load<Sprite>("Sprites/classDiagram");
-        Debug.Log(image);
         GameObject ImagePanel = GameObject.Find("TempPanel");
 
         ImagePanel.GetComponent<Image>().sprite = image;
@@ -122,7 +109,6 @@ public class LoadScript : MonoBehaviour
         {
             var associationInfo = GetAssociationInfo(line);
 
-            //DrawAssociation(gameObjectList[associationInfo.src], gameObjectList[associationInfo.dest], associationInfo.name);
             DrawAssociation(associationInfo.src, associationInfo.dest, associationInfo.name);
         }
 
@@ -130,10 +116,6 @@ public class LoadScript : MonoBehaviour
         {
             int index = Int32.Parse(line)-1;
             animationIndices.Add(index);
-            //yield return new WaitForSeconds(2);
-            //StartCoroutine(Animate(index));
-            //yield return new WaitForSeconds(2);
-
         }
         reader.Close();
     }
@@ -161,7 +143,6 @@ public class LoadScript : MonoBehaviour
     {
         Transform tile = panel.transform.GetChild(row).GetChild(col);
         var myObject = Instantiate(objectPrefab, new Vector3(tile.position.x,tile.position.y, tile.position.z), Quaternion.identity);
-        //myObject.transform.parent = tile;
         myObject.transform.SetParent(tile);
         myObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = name;
 
@@ -182,6 +163,7 @@ public class LoadScript : MonoBehaviour
         Vector2 point1 = new Vector2(object1.transform.position.x+200, object1.transform.position.y);
         Vector2 point2 = new Vector2(object2.transform.position.x+200, object2.transform.position.y); 
 
+        // If association does NOT exist
         if (!associationList.Exists(m => ((m.object1 == src && m.object2 == dest)||(m.object1 == dest && m.object2 == src)))) 
         {
             Debug.Log("Association does not exist!");
@@ -189,7 +171,6 @@ public class LoadScript : MonoBehaviour
             // instantiate a line
             myLine = Instantiate(linePrefab, new Vector3(0,0,0), Quaternion.identity);
             
-
             if(point1.x < point2.x || point1.y < point2.y)
             {
                 myLayout = Instantiate(topPrefab, new Vector3(middleX,middleY,0), Quaternion.identity);
@@ -203,7 +184,6 @@ public class LoadScript : MonoBehaviour
             }
 
             // set parent of line
-            //myLine.transform.parent = panel.transform.parent;
             myLine.transform.SetParent(panel.transform.parent);
             // set points for the line
             myLine.transform.GetChild(0).GetComponent<UILineRenderer>().m_points = new Vector2[] {point1, point2};
@@ -212,29 +192,24 @@ public class LoadScript : MonoBehaviour
             // add to list
             associationList.Add((object1: src, object2: dest, line: myLine));
         }
+        // If association A->B exists
         else if(associationList.Exists(m => ((m.object1 == src && m.object2 == dest))))
         {
             Debug.Log("Association exist! Src -> Dest");
             var list = associationList.Find(m => (m.object1 == src && m.object2 == dest));
             myLine = list.line;
 
-            Debug.Log(dest + " " + src);
-            Debug.Log(list.object1 + " " + list.object2 + " " + list.line);
             if (myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find("UPmessages(Clone)") != null)
             {
-
                 myLayout = myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find("UPmessages(Clone)").gameObject;
             }
-
             else
             {
                 myLayout = Instantiate(topPrefab, new Vector3(middleX, middleY, 0), Quaternion.identity);
                 myLayout.transform.SetParent(myLine.transform.GetChild(0));
             }
-            
-            
         }
-
+        // If association B->A exists
         else
         {
             Debug.Log("Association exist! Dest -> Src");
@@ -244,7 +219,6 @@ public class LoadScript : MonoBehaviour
 
             if (myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find("DOWNmessages(Clone)") != null) 
             {
-
                 myLayout = myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find("DOWNmessages(Clone)").gameObject;
             }
 
@@ -255,17 +229,11 @@ public class LoadScript : MonoBehaviour
             }
         }
 
-
-        //subX = (object2.transform.position.x-object1.transform.position.x);
-        //subY = (object2.transform.position.y-object1.transform.position.y);
-
-
         if (point1.x < point2.x || point1.y < point2.y)
         {
             subX = (object2.transform.position.x - object1.transform.position.x);
             subY = (object2.transform.position.y - object1.transform.position.y);
         }
-
         else
         {
             subX = (object1.transform.position.x - object2.transform.position.x);
@@ -276,20 +244,15 @@ public class LoadScript : MonoBehaviour
         myLayout.transform.eulerAngles = new Vector3(0, 0, angle);
 
 
-
         if (point1.x < point2.x || point1.y < point2.y)
         {
             myMessage = Instantiate(messagePrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
             // set parent of message
-            //myMessage.transform.parent = myLine.transform.GetChild(0);
             myMessage.transform.SetParent(myLayout.transform);
             // set angle of message
-            //var angle = Mathf.Atan2(subY, subX)*180 / Mathf.PI;
             myMessage.transform.eulerAngles = new Vector3(0, 0, angle);
             // set name of message
-
-            //myMessage.transform.GetChild(1).GetChild(0).GetComponent<UIPolygon>().rotation = 50;
             myMessage.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = name;
         }
 
@@ -298,16 +261,12 @@ public class LoadScript : MonoBehaviour
             myMessage = Instantiate(messageLeftPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
             // set parent of message
-            //myMessage.transform.parent = myLine.transform.GetChild(0);
             myMessage.transform.SetParent(myLayout.transform);
             // set angle of message
-            //var angle = Mathf.Atan2(subY, subX)*180 / Mathf.PI;
             myMessage.transform.eulerAngles = new Vector3(0, 0, angle);
             // set name of message
-
             myMessage.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>().text = name;
         }
-
 
         communicationList.Add((object1: object1, object2: object2, msg: myMessage));
 
@@ -355,6 +314,11 @@ public class LoadScript : MonoBehaviour
             msg.transform.GetChild(0).GetChild(0).GetComponent<UIPolygon>().color = color;
         }
         
+    }
+
+    private void Exit()
+    {
+        Application.Quit();
     }
 
 }

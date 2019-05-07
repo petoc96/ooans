@@ -1,4 +1,4 @@
-factoryClass.png
+visitorClass.png
 "Client",B4
 "subject",D4
 "subject",D7
