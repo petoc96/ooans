@@ -6,11 +6,15 @@ mementoClass.png
 1,2,"RequestMemento()"
 2,3,"CreateMemento()"
 2,3,"SetState(state)"
+2,1,"ReturnMemento(memento)"
 1,2,"AcessMemento()"
 2,3,"GetState()"
+3,2,"ReturnState(state)"
 --------------------
 1
 2
 3
 4
 5
+6
+7

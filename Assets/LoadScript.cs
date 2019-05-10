@@ -157,6 +157,8 @@ public class LoadScript : MonoBehaviour
         GameObject myLayout;
         GameObject object1 = gameObjectList[src]; 
         GameObject object2 = gameObjectList[dest];
+        Debug.Log("SRC " + object1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text);
+        Debug.Log("DEST " + object2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text);
         float middleX = (object1.transform.position.x+200+object2.transform.position.x+200)/2;
         float middleY = (object1.transform.position.y+object2.transform.position.y)/2;
         // set the points of the objects
@@ -199,14 +201,44 @@ public class LoadScript : MonoBehaviour
             var list = associationList.Find(m => (m.object1 == src && m.object2 == dest));
             myLine = list.line;
 
-            if (myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find("UPmessages(Clone)") != null)
+            string prefabName = "";
+
+            if (point1.x < point2.x)
             {
-                myLayout = myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find("UPmessages(Clone)").gameObject;
+                prefabName = "UPmessages(Clone)";
+            }
+            else if (point1.x > point2.x) 
+            { 
+                prefabName = "DOWNmessages(Clone)";
+            }
+            else if (point1.y < point2.y) 
+            { 
+                prefabName = "UPmessages(Clone)";
             }
             else
             {
-                myLayout = Instantiate(topPrefab, new Vector3(middleX, middleY, 0), Quaternion.identity);
-                myLayout.transform.SetParent(myLine.transform.GetChild(0));
+                prefabName = "DOWNmessages(Clone)";
+            }
+
+            if (myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find(prefabName) != null)
+            {
+                myLayout = myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find(prefabName).gameObject;
+            }
+            else
+            {
+                if (prefabName == "UPmessages(Clone)")
+                {
+                    Debug.Log("TOP " + middleX + " " + middleY);
+                    myLayout = Instantiate(topPrefab, new Vector3(middleX, middleY, 0), Quaternion.identity);
+                    myLayout.transform.SetParent(myLine.transform.GetChild(0));
+                }
+                else 
+                {
+                    Debug.Log("BOTTOM " + middleX + " " + middleY);
+                    myLayout = Instantiate(bottomPrefab, new Vector3(middleX, middleY, 0), Quaternion.identity);
+                    myLayout.transform.SetParent(myLine.transform.GetChild(0));
+                }
+                
             }
         }
         // If association B->A exists
@@ -217,20 +249,60 @@ public class LoadScript : MonoBehaviour
             var list = associationList.Find(m => (m.object1 == dest && m.object2 == src));
             myLine = list.line;
 
-            if (myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find("DOWNmessages(Clone)") != null) 
+            string prefabName = "";
+
+            if (point1.x < point2.x)
             {
-                myLayout = myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find("DOWNmessages(Clone)").gameObject;
+                prefabName = "UPmessages(Clone)";
+            }
+            else if (point1.x > point2.x) 
+            { 
+                prefabName = "DOWNmessages(Clone)";
+            }
+            else if (point1.y < point2.y) 
+            { 
+                prefabName = "UPmessages(Clone)";
+            }
+            else
+            {
+                prefabName = "DOWNmessages(Clone)";
+            }
+
+            if (myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find(prefabName) != null) 
+            {
+                myLayout = myLine.transform.GetChild(0).GetComponentInChildren<Transform>().Find(prefabName).gameObject;
             }
 
             else
             {
-                myLayout = Instantiate(bottomPrefab, new Vector3(middleX, middleY, 0), Quaternion.identity);
-                myLayout.transform.SetParent(myLine.transform.GetChild(0));
+                if (prefabName == "DOWNmessages(Clone)") 
+                {
+                    Debug.Log("BOTTOM " + middleX + " " + middleY);
+                    myLayout = Instantiate(bottomPrefab, new Vector3(middleX, middleY, 0), Quaternion.identity);
+                    myLayout.transform.SetParent(myLine.transform.GetChild(0));
+                }
+                else 
+                {
+                    Debug.Log("TOP " + middleX + " " + middleY);
+                    myLayout = Instantiate(topPrefab, new Vector3(middleX, middleY, 0), Quaternion.identity);
+                    myLayout.transform.SetParent(myLine.transform.GetChild(0));
+                }
+                
             }
         }
 
-        if (point1.x < point2.x || point1.y < point2.y)
+        if (point1.x < point2.x)
         {
+            subX = (object2.transform.position.x - object1.transform.position.x);
+            subY = (object2.transform.position.y - object1.transform.position.y);
+        }
+        else if (point1.x > point2.x) 
+        { 
+            subX = (object1.transform.position.x - object2.transform.position.x);
+            subY = (object1.transform.position.y - object2.transform.position.y);
+        }
+        else if (point1.y < point2.y) 
+        { 
             subX = (object2.transform.position.x - object1.transform.position.x);
             subY = (object2.transform.position.y - object1.transform.position.y);
         }
@@ -244,8 +316,10 @@ public class LoadScript : MonoBehaviour
         myLayout.transform.eulerAngles = new Vector3(0, 0, angle);
 
 
-        if (point1.x < point2.x || point1.y < point2.y)
+        //if (point1.x < point2.x || point1.y < point2.y)
+        if (point1.x < point2.x)
         {
+            Debug.Log("RIGHT x1" + point1.x + " x2" + point2.x);
             myMessage = Instantiate(messagePrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
             // set parent of message
@@ -255,7 +329,30 @@ public class LoadScript : MonoBehaviour
             // set name of message
             myMessage.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = name;
         }
+        else if (point1.x > point2.x)
+        {
+            Debug.Log("LEFT x1" + point1.x + " x2" + point2.x);
+            myMessage = Instantiate(messageLeftPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
+            // set parent of message
+            myMessage.transform.SetParent(myLayout.transform);
+            // set angle of message
+            myMessage.transform.eulerAngles = new Vector3(0, 0, angle);
+            // set name of message
+            myMessage.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>().text = name;
+        }
+        else if (point1.y < point2.y)
+        {
+            Debug.Log("RIGHT y1" + point1.y + " y2" + point2.y);
+            myMessage = Instantiate(messagePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+
+            // set parent of message
+            myMessage.transform.SetParent(myLayout.transform);
+            // set angle of message
+            myMessage.transform.eulerAngles = new Vector3(0, 0, angle);
+            // set name of message
+            myMessage.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = name;
+        }
         else
         {
             myMessage = Instantiate(messageLeftPrefab, new Vector3(0, 0, 0), Quaternion.identity);
