@@ -398,7 +398,19 @@ public class LoadScript : MonoBehaviour
         object1.GetComponent<Image>().color = color2;
         object2.GetComponent<Image>().color = color2;
 
-        if (object1.transform.position.x < object2.transform.position.x || object1.transform.position.y < object2.transform.position.y)
+        if (object1.transform.position.x < object2.transform.position.x)
+        {
+            msg.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = color;
+            msg.transform.GetChild(1).GetComponent<UILineRenderer>().color = color;
+            msg.transform.GetChild(1).GetChild(0).GetComponent<UIPolygon>().color = color;
+        }
+        else if (object1.transform.position.x > object2.transform.position.x) 
+        {
+            msg.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().color = color;
+            msg.transform.GetChild(0).GetComponent<UILineRenderer>().color = color;
+            msg.transform.GetChild(0).GetChild(0).GetComponent<UIPolygon>().color = color;
+        }
+        else if (object1.transform.position.y < object2.transform.position.y) 
         {
             msg.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = color;
             msg.transform.GetChild(1).GetComponent<UILineRenderer>().color = color;

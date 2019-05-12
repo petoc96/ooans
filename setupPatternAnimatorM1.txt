@@ -1,0 +1,16 @@
+mementoClass.png
+"CareTaker",B5
+"Originator",F5
+"Memento",D7
+--------------------
+1,2,"RequestMemento()"
+2,3,"CreateMemento()"
+2,3,"SetState(state)"
+1,2,"AcessMemento()"
+2,3,"GetState()"
+--------------------
+1
+2
+3
+4
+5
