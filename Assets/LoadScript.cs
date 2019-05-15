@@ -12,7 +12,9 @@ using UnityEngine.SceneManagement;
 public class LoadScript : MonoBehaviour
 {
     public Button loadButton;
+    public Button stepButton;
     public Button startButton;
+    public Button pauseButton;
     public Button exitButton;
     public GameObject panel;
     public GameObject objectPrefab;
@@ -28,7 +30,7 @@ public class LoadScript : MonoBehaviour
     private List<(GameObject object1, GameObject object2, GameObject msg)> communicationList = new List<(GameObject object1, GameObject object2, GameObject msg)>();
     private List<(int object1, int object2, GameObject line)> associationList = new List<(int object1, int object2, GameObject line)>();
     private List<int> animationIndices = new List<int>();
-
+    private int index;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +38,8 @@ public class LoadScript : MonoBehaviour
         loadButton.onClick.AddListener(LoadFromFile);
         startButton.onClick.AddListener(StartAnimation);
         exitButton.onClick.AddListener(Exit);
+        stepButton.onClick.AddListener(Step);
+        pauseButton.onClick.AddListener(Pause);
         
     }
 
@@ -111,13 +115,14 @@ public class LoadScript : MonoBehaviour
 
             DrawAssociation(associationInfo.src, associationInfo.dest, associationInfo.name);
         }
-
+        
         while ((line = reader.ReadLine()) != null)
         {
             int index = Int32.Parse(line)-1;
             animationIndices.Add(index);
         }
         reader.Close();
+
     }
 
     private (string name, int src, int dest) GetAssociationInfo(string line) 
@@ -339,7 +344,7 @@ public class LoadScript : MonoBehaviour
             // set angle of message
             myMessage.transform.eulerAngles = new Vector3(0, 0, angle);
             // set name of message
-            myMessage.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>().text = name;
+            myMessage.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = name;
         }
         else if (point1.y < point2.y)
         {
@@ -362,7 +367,7 @@ public class LoadScript : MonoBehaviour
             // set angle of message
             myMessage.transform.eulerAngles = new Vector3(0, 0, angle);
             // set name of message
-            myMessage.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>().text = name;
+            myMessage.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = name;
         }
 
         communicationList.Add((object1: object1, object2: object2, msg: myMessage));
@@ -372,11 +377,41 @@ public class LoadScript : MonoBehaviour
     private void DrawMessage(GameObject line)
     {
         
-    }      
+    }
+
+    private void Step() 
+    {
+        //foreach(int index in animationIndices) 
+        //{
+        //    GameObject msg = communicationList[index].msg;
+        //    msg.transform.GetChild(1).GetChild(0).GetComponent<UIPolygon>().color = Color.red;
+        //}
+
+        if (index > 0) 
+        {
+            SetColor(communicationList[index-1].object1, communicationList[index-1].object2, 
+            communicationList[index-1].msg, Color.black,  new Color32(159,152,240, 255));
+        }
+        if (index == 0)     
+        {
+            SetColor(communicationList[communicationList.Count-1].object1, communicationList[communicationList.Count-1].object2, 
+            communicationList[communicationList.Count-1].msg, Color.black,  new Color32(159,152,240, 255));
+        }
+        if (index < communicationList.Count)
+        {
+            SetColor(communicationList[index].object1, communicationList[index].object2, 
+            communicationList[index].msg, Color.green,  new Color32(152,240,159, 255));
+        }
+        
+
+        index++;
+
+        if (index == communicationList.Count+1)
+            index = 0;
+    }
 
     private IEnumerator Animate()
     {
-
         foreach(int index in animationIndices) 
         {
             GameObject object1 = communicationList[index].object1;
@@ -398,31 +433,30 @@ public class LoadScript : MonoBehaviour
         object1.GetComponent<Image>().color = color2;
         object2.GetComponent<Image>().color = color2;
 
-        if (object1.transform.position.x < object2.transform.position.x)
-        {
-            msg.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = color;
-            msg.transform.GetChild(1).GetComponent<UILineRenderer>().color = color;
-            msg.transform.GetChild(1).GetChild(0).GetComponent<UIPolygon>().color = color;
-        }
-        else if (object1.transform.position.x > object2.transform.position.x) 
-        {
-            msg.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().color = color;
-            msg.transform.GetChild(0).GetComponent<UILineRenderer>().color = color;
-            msg.transform.GetChild(0).GetChild(0).GetComponent<UIPolygon>().color = color;
-        }
-        else if (object1.transform.position.y < object2.transform.position.y) 
-        {
-            msg.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = color;
-            msg.transform.GetChild(1).GetComponent<UILineRenderer>().color = color;
-            msg.transform.GetChild(1).GetChild(0).GetComponent<UIPolygon>().color = color;
-        }
-        else
-        {
-            msg.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().color = color;
-            msg.transform.GetChild(0).GetComponent<UILineRenderer>().color = color;
-            msg.transform.GetChild(0).GetChild(0).GetComponent<UIPolygon>().color = color;
-        }
+        msg.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = color;
+        msg.transform.GetChild(1).GetComponent<UILineRenderer>().color = color;
+        msg.transform.GetChild(1).GetChild(0).GetComponent<UIPolygon>().color = color;
         
+    }
+
+    private void Pause()
+    {
+        
+        foreach(int index in animationIndices) 
+        {
+            GameObject object1 = communicationList[index].object1;
+            GameObject object2 = communicationList[index].object2;
+            GameObject msg = communicationList[index].msg;
+            Color color2 = new Color32(159,152,240, 255); // violet
+            Color color1 = new Color32(152,240,159, 255); // green
+            object1.GetComponent<Image>().color = Color.red;
+            
+
+            SetColor(object1, object2, msg, Color.red, Color.red);
+
+            msg.transform.GetChild(1).GetChild(0).GetComponent<UIPolygon>().enabled = true;
+
+        }
     }
 
     private void Exit()
