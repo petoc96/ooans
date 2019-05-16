@@ -14,7 +14,7 @@ public class LoadScript : MonoBehaviour
     public Button loadButton;
     public Button stepButton;
     public Button startButton;
-    public Button pauseButton;
+    public Button resetButton;
     public Button exitButton;
     public GameObject panel;
     public GameObject objectPrefab;
@@ -39,7 +39,7 @@ public class LoadScript : MonoBehaviour
         startButton.onClick.AddListener(StartAnimation);
         exitButton.onClick.AddListener(Exit);
         stepButton.onClick.AddListener(Step);
-        pauseButton.onClick.AddListener(Pause);
+        resetButton.onClick.AddListener(Reset);
         
     }
 
@@ -381,21 +381,16 @@ public class LoadScript : MonoBehaviour
 
     private void Step() 
     {
-        //foreach(int index in animationIndices) 
-        //{
-        //    GameObject msg = communicationList[index].msg;
-        //    msg.transform.GetChild(1).GetChild(0).GetComponent<UIPolygon>().color = Color.red;
-        //}
 
         if (index > 0) 
         {
             SetColor(communicationList[index-1].object1, communicationList[index-1].object2, 
-            communicationList[index-1].msg, Color.black,  new Color32(159,152,240, 255));
+            communicationList[index-1].msg, Color.black,  new Color32(177, 165, 176, 255));
         }
         if (index == 0)     
         {
             SetColor(communicationList[communicationList.Count-1].object1, communicationList[communicationList.Count-1].object2, 
-            communicationList[communicationList.Count-1].msg, Color.black,  new Color32(159,152,240, 255));
+            communicationList[communicationList.Count-1].msg, Color.black,  new Color32(177, 165, 176, 255));
         }
         if (index < communicationList.Count)
         {
@@ -410,6 +405,7 @@ public class LoadScript : MonoBehaviour
             index = 0;
     }
 
+    
     private IEnumerator Animate()
     {
         foreach(int index in animationIndices) 
@@ -417,7 +413,7 @@ public class LoadScript : MonoBehaviour
             GameObject object1 = communicationList[index].object1;
             GameObject object2 = communicationList[index].object2;
             GameObject msg = communicationList[index].msg;
-            Color color2 = new Color32(159,152,240, 255); // violet
+            Color color2 = new Color32(177,165,176, 255); // gray
             Color color1 = new Color32(152,240,159, 255); // green
             //Color color1 = new Color32(240,159,152, 255); // red
 
@@ -439,24 +435,12 @@ public class LoadScript : MonoBehaviour
         
     }
 
-    private void Pause()
+    private void Reset()
     {
-        
-        foreach(int index in animationIndices) 
-        {
-            GameObject object1 = communicationList[index].object1;
-            GameObject object2 = communicationList[index].object2;
-            GameObject msg = communicationList[index].msg;
-            Color color2 = new Color32(159,152,240, 255); // violet
-            Color color1 = new Color32(152,240,159, 255); // green
-            object1.GetComponent<Image>().color = Color.red;
-            
+        SetColor(communicationList[index - 1].object1, communicationList[index - 1].object2,
+        communicationList[index - 1].msg, Color.black, new Color32(177, 165, 176, 255));
+        index = 0;
 
-            SetColor(object1, object2, msg, Color.red, Color.red);
-
-            msg.transform.GetChild(1).GetChild(0).GetComponent<UIPolygon>().enabled = true;
-
-        }
     }
 
     private void Exit()

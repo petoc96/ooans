@@ -411,7 +411,7 @@ MonoBehaviour:
   loadButton: {fileID: 1282641275}
   stepButton: {fileID: 917773623}
   startButton: {fileID: 377092549}
-  pauseButton: {fileID: 449080114}
+  resetButton: {fileID: 0}
   exitButton: {fileID: 1009999288}
   panel: {fileID: 1261076952}
   objectPrefab: {fileID: 7320676437126485876, guid: d11ba2134c2e59049855d96a7aa3f777,
@@ -2002,7 +2002,7 @@ GameObject:
   - component: {fileID: 449080115}
   - component: {fileID: 449080114}
   m_Layer: 5
-  m_Name: Pause Button
+  m_Name: Reset Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4796,7 +4796,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Pause
+  m_Text: Reset Steps
 --- !u!222 &1326289973
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5676,7 +5676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5686275, g: 1, b: 0.6627451, a: 1}
+  m_Color: {r: 0.9607843, g: 1, b: 0.6627451, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
